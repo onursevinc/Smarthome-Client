@@ -1,0 +1,115 @@
+<button pButton type="button" icon="pi pi-plus" class="ui-button-info" (click)="showDialog()"
+        label="New User"></button>
+
+<p-table [value]="users" [lazy]="true" (onLazyLoad)="loadUsers($event)">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>User Name</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Client Type</th>
+      <th>Created</th>
+      <th>Updated</th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{user.username}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.type}}</td>
+      <td>{{user.created_at}}</td>
+      <td>{{user.updated_at}}</td>
+      <td style="text-align:center">
+        <button pButton type="button" icon="pi pi-pencil" class="ui-button-info" (click)="showDialog(user)"></button>
+        <button pButton type="button" icon="pi pi-times" class="ui-button-danger" (click)="deleteUser(user)"></button>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-dialog header="User Form" [(visible)]="display" [modal]="true" [responsive]="true"
+          [style]="{width: '350px', minWidth: '200px'}" [minY]="70"
+          [maximizable]="true" [baseZIndex]="10000">
+  <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm"
+        [appMustMatch]="['password', 'confirmPassword']"
+        novalidate>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          {{userForm['name']}}
+          <div class="form-group">
+            <label for="username">User Name</label>
+            <input id="username" type="text" class="form-control" name="username" [(ngModel)]="userForm.username"
+                   #username="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required/>
+            <div *ngIf="f.submitted && username.invalid" class="invalid-feedback">
+              <div *ngIf="username.errors.required">User Name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input id="name" type="text" class="form-control" name="firstName" [(ngModel)]="userForm.name"
+                   #name="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && name.invalid }" required/>
+            <div *ngIf="f.submitted && name.invalid" class="invalid-feedback">
+              <div *ngIf="name.errors.required">Name is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" type="email" class="form-control" name="lastName" [(ngModel)]="userForm.email"
+                   #email="ngModel"
+                   [disabled]="formState === FormStates.Edit"
+                   [ngClass]="{ 'is-invalid': f.submitted && email.invalid }" required/>
+            <div *ngIf="f.submitted && email.invalid" class="invalid-feedback">
+              <div *ngIf="email.errors.required">Email is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" name="password" [(ngModel)]="userForm.password"
+                   #password="ngModel"
+                   [ngClass]="{ 'is-invalid': f.submitted && password.invalid }" required minlength="6"/>
+            <div *ngIf="f.submitted && password.invalid" class="invalid-feedback">
+              <div *ngIf="password.errors.required">Password is required</div>
+              <div *ngIf="password.errors.minlength">Password must be at least 6 characters</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" class="form-control" name="confirmPassword"
+                   [(ngModel)]="userForm.confirmPassword"
+                   #confirmPassword="ngModel" [ngClass]="{ 'is-invalid': f.submitted && confirmPassword.invalid }"
+                   required/>
+            <div *ngIf="f.submitted && confirmPassword.invalid" class="invalid-feedback">
+              <div *ngIf="confirmPassword.errors.required">Confirm Password is required</div>
+              <div *ngIf="confirmPassword.errors.mustMatch">Passwords must match</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="type">Client Type</label>
+            <select id="type" class="form-control" name="type" [(ngModel)]="userForm.type"
+                    #type="ngModel" [ngClass]="{ 'is-invalid': f.submitted && type.invalid }"
+                    required>
+              <option *ngFor="let type of userTypes; let i = index;"
+                      [selected]="userForm.type == type">{{type}}</option>
+            </select>
+            <div *ngIf="f.submitted && type.invalid" class="invalid-feedback">
+              <div *ngIf="type.errors.required">User type is required</div>
+            </div>
+          </div>
+          <div class="form-group">
+          </div>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <button class="ui-button-sprimary" pButton icon="pi pi-check" label="Save"></button>
+      <button type="button" pButton icon="pi pi-close" (click)="display=false" label="Close"
+              class="ui-button-secondary"></button>
+    </p-footer>
+  </form>
+</p-dialog>
+

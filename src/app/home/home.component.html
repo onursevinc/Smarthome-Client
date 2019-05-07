@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="jumbotron text-center">
+    <h1>
+      <img class="logo" src="assets/ngx-rocket-logo.png" alt="angular logo"/>
+      <span translate>Hello world !</span>
+    </h1>
+
+    <section class="d-flex" *ngIf="devices">
+      <div class="card" *ngFor="let device of devices">
+        <div>
+          <div class="card-body">
+            <button type="button" class="btn-switch" [ngClass]="device.data.value === 1 ? 'on' : ''"
+               (click)="deviceClick(device)" [disabled]="!device.status"><i class="fas fa-power-off"></i></button>
+            <span [ngClass]="device.status ? 'on' : ''"></span>
+            <p class="card-text">{{device.name}} - {{device.location}} - {{device.data.value}}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <app-loader [isLoading]="isLoading"></app-loader>
+  </div>
+</div>
