@@ -54,6 +54,7 @@
     "@types/jasminewd2": "^2.0.6",
     "@types/lodash": "^4.14.123",
     "@types/node": "^11.13.7",
+    "@types/socket.io": "^2.1.2",
     "@types/socket.io-client": "^1.4.32",
     "codelyzer": "^5.0.0",
     "hads": "^1.7.2",

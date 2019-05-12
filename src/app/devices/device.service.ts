@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {FormState} from '@app/users/users.service';
@@ -17,7 +17,11 @@ export class DeviceService {
   }
 
   updateDevice(device: Device, state: FormState): Observable<Device> {
-    return this.http[state === FormState.New ? 'post' : 'put']<Device>('/devices', device);
+    if (state === FormState.New) {
+      return this.http.post<Device>(`/devices`, device);
+    } else {
+      return this.http.put<Device>(`/devices/${device._id}`, device);
+    }
   }
 
   deleteDevice(device: Device): Observable<any> {

@@ -12,7 +12,8 @@ export class User {
   confirmPassword: string;
   username?: string;
   admin?: boolean;
+  session?: string;
   type: UserType;
-  created_at: Date;
-  updated_at: Date;
+  created: Date;
+  updated: Date;
 }

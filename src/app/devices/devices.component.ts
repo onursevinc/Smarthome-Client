@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormState} from '@app/users/users.service';
 import {DataTypes, Device} from '@app/models/device';
-import {LazyLoadEvent} from 'primeng/api';
-import {User, UserType} from '@app/models/user';
+import {ConfirmationService, LazyLoadEvent} from 'primeng/api';
 import {DeviceService} from '@app/devices/device.service';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-devices',
@@ -20,7 +20,7 @@ export class DevicesComponent implements OnInit {
   loading: boolean;
   display = false;
 
-  constructor(private deviceService: DeviceService) {
+  constructor(private deviceService: DeviceService, private confirmationService: ConfirmationService) {
     this.dataTypes = this.dataTypes.slice(this.dataTypes.length / 2);
   }
 
@@ -47,19 +47,30 @@ export class DevicesComponent implements OnInit {
   }
 
   deleteDevice(device: Device) {
-    this.deviceService.deleteDevice(device).subscribe(result => {
-      const index = this.devices.indexOf(device, 0);
-      if (index > -1) {
-        this.devices.splice(index, 1);
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.deviceService.deleteDevice(device).subscribe(result => {
+          const index = this.devices.indexOf(device, 0);
+          if (index > -1) {
+            this.devices.splice(index, 1);
+          }
+        });
+      },
+      reject: () => {
+
       }
     });
   }
 
-  onSubmit() {
+  onSubmit(f: FormGroup) {
     this.deviceService.updateDevice(this.deviceForm, this.formState).subscribe(result => {
       if (this.formState === FormState.New) {
-        this.devices.push(this.deviceForm);
+        this.devices.push(result);
       }
+      f.reset();
       this.display = false;
     });
   }

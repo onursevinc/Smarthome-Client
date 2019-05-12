@@ -9,9 +9,7 @@ export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
   serverUrl: 'http://localhost:3000/api',
-  //serverUrl: 'http://217.61.105.44:3000/api',
   socketUrl: 'http://localhost:3000',
-  // socketUrl: 'http://217.61.105.44:3000',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',

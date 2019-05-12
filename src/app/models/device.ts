@@ -18,6 +18,7 @@ export class Device {
   location: string;
   type: string;
   token: string;
+  session: string;
   data: DeviceDataType = new DeviceDataType();
   status = false;
 }

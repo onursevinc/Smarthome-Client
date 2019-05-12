@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {User} from '@app/models/user';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { User } from '@app/models/user';
+import { HttpClient } from '@angular/common/http';
 
 export enum FormState {
   New = 'new',
@@ -17,11 +17,12 @@ export class UsersService {
   }
 
   AllUsers(): Observable<User[]> {
-    return this.http.get <User[]>('/users');
+    return this.http.get<User[]>('/users');
   }
 
   updateUser(user: User, state: FormState): Observable<User> {
-    return this.http[state === FormState.New ? 'post' : 'put']<User>('/users', user);
+    const url = state === FormState.New ? `/users` : `/users/${user._id}`;
+    return this.http[state === FormState.New ? 'post' : 'put']<User>(url, user);
   }
 
   deleteUser(user: User): Observable<any> {

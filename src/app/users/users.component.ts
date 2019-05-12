@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormState, UsersService} from '@app/users/users.service';
 import {User, UserType} from '@app/models/user';
-import {LazyLoadEvent} from 'primeng/api';
+import {ConfirmationService, LazyLoadEvent} from 'primeng/api';
 
 @Component({
   selector: 'app-users',
@@ -18,7 +18,7 @@ export class UsersComponent implements OnInit {
   loading: boolean;
   display = false;
 
-  constructor(private usersService: UsersService) {
+  constructor(private usersService: UsersService, private confirmationService: ConfirmationService) {
     this.userTypes = this.userTypes.slice(this.userTypes.length / 2);
   }
 
@@ -46,17 +46,26 @@ export class UsersComponent implements OnInit {
   }
 
   deleteUser(user: User) {
-    this.usersService.deleteUser(user).subscribe(result => {
-      const index = this.users.indexOf(user, 0);
-      if (index > -1) {
-        this.users.splice(index, 1);
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.usersService.deleteUser(user).subscribe(result => {
+          const index = this.users.indexOf(user, 0);
+          if (index > -1) {
+            this.users.splice(index, 1);
+          }
+        });
+      },
+      reject: () => {
+
       }
     });
   }
 
   onSubmit() {
     this.usersService.updateUser(this.userForm, this.formState).subscribe(result => {
-
       if (this.formState === FormState.New) {
         this.users.push(this.userForm);
       }

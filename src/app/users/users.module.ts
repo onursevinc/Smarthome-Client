@@ -9,7 +9,7 @@ import {TableModule} from 'primeng/table';
 
 
 import {MustMatchDirective} from './must-match.directive';
-import {ButtonModule, DialogModule, DropdownModule} from 'primeng/primeng';
+import {ButtonModule, ConfirmationService, ConfirmDialogModule, DialogModule, DropdownModule} from 'primeng/primeng';
 
 @NgModule({
   declarations: [UsersComponent, MustMatchDirective],
@@ -21,7 +21,11 @@ import {ButtonModule, DialogModule, DropdownModule} from 'primeng/primeng';
     ButtonModule,
     DialogModule,
     DropdownModule,
-    TableModule
+    TableModule,
+    ConfirmDialogModule
+  ],
+  providers: [
+    ConfirmationService
   ]
 })
 export class UsersModule {

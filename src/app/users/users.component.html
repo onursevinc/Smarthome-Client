@@ -8,6 +8,7 @@
       <th>Name</th>
       <th>Email</th>
       <th>Client Type</th>
+      <th>Session</th>
       <th>Created</th>
       <th>Updated</th>
       <th></th>
@@ -19,8 +20,9 @@
       <td>{{user.name}}</td>
       <td>{{user.email}}</td>
       <td>{{user.type}}</td>
-      <td>{{user.created_at}}</td>
-      <td>{{user.updated_at}}</td>
+      <td>{{user.session}}</td>
+      <td>{{user.created}}</td>
+      <td>{{user.updated}}</td>
       <td style="text-align:center">
         <button pButton type="button" icon="pi pi-pencil" class="ui-button-info" (click)="showDialog(user)"></button>
         <button pButton type="button" icon="pi pi-times" class="ui-button-danger" (click)="deleteUser(user)"></button>
@@ -39,6 +41,8 @@
       <div class="row">
         <div class="col-12">
           {{userForm['name']}}
+          <input type="hidden" name="_id" [(ngModel)]="userForm._id"/>
+          <input type="hidden" name="session" [(ngModel)]="userForm.session"/>
           <div class="form-group">
             <label for="username">User Name</label>
             <input id="username" type="text" class="form-control" name="username" [(ngModel)]="userForm.username"
@@ -112,4 +116,5 @@
     </p-footer>
   </form>
 </p-dialog>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
